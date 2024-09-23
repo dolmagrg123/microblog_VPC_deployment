@@ -56,8 +56,11 @@ pipeline {
         stage('Deploy') {
             steps {
                 // sh 'sudo systemctl restart microblog'
-                    chmod 400 your_key.pem
-                    ssh -i "your_key.pem" ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
+                    chmod 400 workload_4.pem
+                
+                    scp -i "workload_4.pem" setup.sh ubuntu@${WEB_SERVER_IP}:~/
+                    scp -i "workload_4.pem" start_app.sh ubuntu@${APPLICATION_SERVER_IP}:~/
+                    ssh -i "workload_4.pem" ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
             }
         }
 
