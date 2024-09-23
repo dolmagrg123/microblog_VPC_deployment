@@ -2,8 +2,8 @@ pipeline {
   agent any
 
     environment {
-        WEB_SERVER_IP = env.WEB_SERVER_IP // Access the environment variable
-        APPLICATION_SERVER_IP = env.APPLICATION_SERVER_IP // Access the application server IP
+        WEB_SERVER_IP = "${env.WEB_SERVER_IP}" // Access the environment variable
+        APPLICATION_SERVER_IP = "${env.APPLICATION_SERVER_IP}" // Access the application server IP
         SSH_KEY = credentials('my-ssh-key')
     }
 
