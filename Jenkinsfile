@@ -57,10 +57,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 // sh 'sudo systemctl restart microblog'
-                
-                    scp -i "${SSH_KEY}" setup.sh ubuntu@${WEB_SERVER_IP}:~/
-                    scp -i "${SSH_KEY}" start_app.sh ubuntu@${APPLICATION_SERVER_IP}:~/
-                    ssh -i "${SSH_KEY}" ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
+                sh '''#!/bin/bash
+                scp -i "${SSH_KEY}" setup.sh ubuntu@${WEB_SERVER_IP}:~/
+                scp -i "${SSH_KEY}" start_app.sh ubuntu@${APPLICATION_SERVER_IP}:~/
+                ssh -i "${SSH_KEY}" ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
+                '''
+            
             }
         }
 
