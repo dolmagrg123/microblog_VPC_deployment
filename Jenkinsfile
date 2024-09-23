@@ -4,6 +4,7 @@ pipeline {
     environment {
         WEB_SERVER_IP = env.WEB_SERVER_IP // Access the environment variable
         APPLICATION_SERVER_IP = env.APPLICATION_SERVER_IP // Access the application server IP
+        SSH_KEY = credentials('my-ssh-key')
     }
 
     stages {
@@ -56,11 +57,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 // sh 'sudo systemctl restart microblog'
-                    chmod 400 workload_4.pem
                 
-                    scp -i "workload_4.pem" setup.sh ubuntu@${WEB_SERVER_IP}:~/
-                    scp -i "workload_4.pem" start_app.sh ubuntu@${APPLICATION_SERVER_IP}:~/
-                    ssh -i "workload_4.pem" ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
+                    scp -i "SSH_KEY" setup.sh ubuntu@${WEB_SERVER_IP}:~/
+                    scp -i "SSH_KEY" start_app.sh ubuntu@${APPLICATION_SERVER_IP}:~/
+                    ssh -i "SSH_KEY" ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
             }
         }
 
