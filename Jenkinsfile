@@ -4,7 +4,14 @@ pipeline {
         stage ('Build') {
             steps {
                 sh '''#!/bin/bash
-                <enter your code here>
+                python3.9 -m venv venv
+                source venv/bin/activate
+                pip install pip --upgrade
+                pip install -r requirements.txt
+                pip install gunicorn pymysql cryptography 
+                export FLASK_APP=microblog.py
+                flask translate compile
+                flask db upgrade
                 '''
             }
         }
@@ -25,14 +32,29 @@ pipeline {
             steps {
                 dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                
             }
         }
-      stage ('Deploy') {
+      stage ('Clean') {
             steps {
                 sh '''#!/bin/bash
-                <enter your code here>
+                if [[ $(ps aux | grep -i "gunicorn" | tr -s " " | head -n 1 | cut -d " " -f 2) != 0 ]]
+                then
+                ps aux | grep -i "gunicorn" | tr -s " " | head -n 1 | cut -d " " -f 2 > pid.txt
+                kill $(cat pid.txt)
+                exit 0
+                fi
                 '''
             }
         }
+        stage('Deploy') {
+            steps {
+                // sh 'sudo systemctl restart microblog'
+                ssh -i "your_key.pem" ubuntu@<private-web-server-ip> 'bash ~/setup.sh'
+            }
+        }
+
+        }
+
     }
-}
+
