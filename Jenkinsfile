@@ -1,5 +1,11 @@
 pipeline {
   agent any
+
+    environment {
+        WEB_SERVER_IP = env.WEB_SERVER_IP // Access the environment variable
+        APPLICATION_SERVER_IP = env.APPLICATION_SERVER_IP // Access the application server IP
+    }
+
     stages {
         stage ('Build') {
             steps {
@@ -50,7 +56,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 // sh 'sudo systemctl restart microblog'
-                ssh -i "your_key.pem" ubuntu@<private-web-server-ip> 'bash ~/setup.sh'
+                    chmod 400 your_key.pem
+                    ssh -i "your_key.pem" ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
             }
         }
 
