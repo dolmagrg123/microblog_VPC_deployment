@@ -50,7 +50,7 @@ pipeline {
     //             fi
     //             '''
     //         }
-        }
+        // }
         stage('Deploy') {
             steps {
                 // sh 'sudo systemctl restart microblog'
@@ -64,6 +64,7 @@ pipeline {
         }
 
         }
+}
 
     
 
