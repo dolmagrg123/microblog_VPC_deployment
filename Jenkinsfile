@@ -55,7 +55,7 @@ pipeline {
             steps {
                 // sh 'sudo systemctl restart microblog'
                 sh '''#!/bin/bash
-                echo "${SSH_KEY}
+                echo "${SSH_KEY}"
                 ssh -i "${SSH_KEY}" ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
                 '''
                 // scp -i "${SSH_KEY}" scripts/setup.sh ubuntu@${WEB_SERVER_IP}:~/
