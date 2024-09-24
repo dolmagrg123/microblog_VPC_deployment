@@ -1,11 +1,6 @@
 #! /bin/bash
 
-# Check if the application server IP is provided
 APPLICATION_SERVER_IP=$1
-if [ -z "$APPLICATION_SERVER_IP" ]; then
-    echo "Usage: $0 <APPLICATION_SERVER_IP>"
-    exit 1
-fi
 
 # Set permissions for the SSH key
 chmod 400 workload_4.pem
