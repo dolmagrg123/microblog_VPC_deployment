@@ -68,8 +68,8 @@ pipeline {
                     sh '''
                         [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
                         ssh-keyscan -t rsa,dsa ${WEB_SERVER_IP} >> ~/.ssh/known_hosts
-                        scp scripts/setup.sh ubuntu@${WEB_SERVER_IP}:~/
-                        scp scripts/start_app.sh ubuntu@${APPLICATION_SERVER_IP}:~/
+                        scp -o StrictHostKeyChecking=no scripts/setup.sh ubuntu@${WEB_SERVER_IP}:~/
+                        scp -o StrictHostKeyChecking=no scripts/start_app.sh ubuntu@${APPLICATION_SERVER_IP}:~/
                         ssh ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
                     '''
     }
