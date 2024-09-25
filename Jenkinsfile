@@ -52,17 +52,26 @@ pipeline {
             }
         }
         stage('Deploy') {
-            steps {
-                // sh 'sudo systemctl restart microblog'
-                sh '''#!/bin/bash
-                echo "${SSH_KEY}"
-                echo "reached here"
-                scp -i "${SSH_KEY}" scripts/setup.sh ubuntu@${WEB_SERVER_IP}:~/
-                scp -i "${SSH_KEY}" scripts/start_app.sh ubuntu@${APPLICATION_SERVER_IP}:~/
-                ssh -i "${SSH_KEY}" ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
-                '''
+            // steps {
+            //     // sh 'sudo systemctl restart microblog'
+            //     sh '''#!/bin/bash
+            //     echo "${SSH_KEY}"
+            //     echo "reached here"
+            //     scp -i "${SSH_KEY}" scripts/setup.sh ubuntu@${WEB_SERVER_IP}:~/
+            //     scp -i "${SSH_KEY}" scripts/start_app.sh ubuntu@${APPLICATION_SERVER_IP}:~/
+            //     ssh -i "${SSH_KEY}" ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
+            //     '''
 
-            }
+            // }
+            steps {
+                    sshagent(credentials: ['my-ssh-key']) {
+                    sh '''
+                        [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
+                        ssh-keyscan -t rsa,dsa ${WEB_SERVER_IP} >> ~/.ssh/known_hosts
+                        ssh -i "${SSH_KEY}" ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
+                    '''
+    }
+}
         }
 
         }
