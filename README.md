@@ -19,7 +19,7 @@
 
 2. In the AWS console, create a custom VPC with one availability zome, a public and a private subnet.  There should be a NAT Gateway in 1 AZ and no VPC endpoints.  DNS hostnames and DNS resolution should be selected.
 
-![VPC_Setup](images/VPC_setup.jpg)
+![VPC_Setup](Images/VPC_setup.jpg)
 
 3. Navigate to subnets and edit the settings of the public subet you created to auto assign public IPv4 addresses.
 
