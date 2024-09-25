@@ -32,34 +32,36 @@ pipeline {
                 }
             }
         }
-    //   stage ('OWASP FS SCAN') {
-    //         steps {
-    //             dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
-    //             dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+      stage ('OWASP FS SCAN') {
+            steps {
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
                 
-    //         }
-    //     }
-    //   stage ('Clean') {
-    //         steps {
-    //             sh '''#!/bin/bash
-    //             if [[ $(ps aux | grep -i "gunicorn" | tr -s " " | head -n 1 | cut -d " " -f 2) != 0 ]]
-    //             then
-    //             ps aux | grep -i "gunicorn" | tr -s " " | head -n 1 | cut -d " " -f 2 > pid.txt
-    //             kill $(cat pid.txt)
-    //             exit 0
-    //             fi
-    //             '''
-    //         }
-        // }
+            }
+        }
+      stage ('Clean') {
+            steps {
+                sh '''#!/bin/bash
+                if [[ $(ps aux | grep -i "gunicorn" | tr -s " " | head -n 1 | cut -d " " -f 2) != 0 ]]
+                then
+                ps aux | grep -i "gunicorn" | tr -s " " | head -n 1 | cut -d " " -f 2 > pid.txt
+                kill $(cat pid.txt)
+                exit 0
+                fi
+                '''
+            }
+        }
         stage('Deploy') {
             steps {
                 // sh 'sudo systemctl restart microblog'
                 sh '''#!/bin/bash
                 echo "${SSH_KEY}"
+                echo "reached here"
+                scp -i "${SSH_KEY}" scripts/setup.sh ubuntu@${WEB_SERVER_IP}:~/
+                scp -i "${SSH_KEY}" scripts/start_app.sh ubuntu@${APPLICATION_SERVER_IP}:~/
                 ssh -i "${SSH_KEY}" ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
                 '''
-                // scp -i "${SSH_KEY}" scripts/setup.sh ubuntu@${WEB_SERVER_IP}:~/
-                // scp -i "${SSH_KEY}" scripts/start_app.sh ubuntu@${APPLICATION_SERVER_IP}:~/
+
             }
         }
 
