@@ -7,6 +7,7 @@ if [ ! -d "microblog_VPC_deployment" ]; then
   git clone https://github.com/dolmagrg123/microblog_VPC_deployment.git
 fi
 cd microblog_VPC_deployment
+git pull
 python3.9 -m venv venv
 echo "Activating vitual env"
 source venv/bin/activate
