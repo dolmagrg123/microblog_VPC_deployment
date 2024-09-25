@@ -1,5 +1,11 @@
 # Kura Labs Cohort 5- Deployment Workload 4
 
+- [PURPOSE](#purpose)
+- [STEPS And Why each was Necessary](#the-steps-taken-and-why-each-was-necessaryimportant)
+- [SYSTEM DESIGN DIAGRAM](#system-design-diagram)
+- [ISSUES and TROUBLESHOOTING](#issuestroubleshooting)
+- [OPTIMIZATION](#optimization)
+- [CONCLUSION](#conclusion)
 
 ---
 
@@ -7,15 +13,13 @@
 
 ## Provisioning Server Infrastructure:
 
-Welcome to Deployment Workload 4! In Workload 3 We shifted to infrastucture provisioned by us and learned about what goes into deploying an application.  That was hardly an effective system though.  Let's build out our infrastructure a little more.
-
-Be sure to document each step in the process and explain WHY each step is important to the pipeline.
-
 ## Instructions
 
 1. Clone this repo to your GitHub account. IMPORTANT: Make sure that the repository name is "microblog_VPC_deployment"
 
 2. In the AWS console, create a custom VPC with one availability zome, a public and a private subnet.  There should be a NAT Gateway in 1 AZ and no VPC endpoints.  DNS hostnames and DNS resolution should be selected.
+
+![VPC_Setup](images/VPC_setup.jpg)
 
 3. Navigate to subnets and edit the settings of the public subet you created to auto assign public IPv4 addresses.
 
