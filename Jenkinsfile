@@ -60,6 +60,8 @@ pipeline {
             //     scp -i "${SSH_KEY}" scripts/setup.sh ubuntu@${WEB_SERVER_IP}:~/
             //     scp -i "${SSH_KEY}" scripts/start_app.sh ubuntu@${APPLICATION_SERVER_IP}:~/
             //     ssh -i "${SSH_KEY}" ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
+            //     scp -o StrictHostKeyChecking=no "${WORKSPACE}/microblog_VPC_deployment/scripts/setup.sh" ubuntu@${WEB_SERVER_IP}:~/
+            //     scp -o StrictHostKeyChecking=no "${WORKSPACE}/microblog_VPC_deployment/scripts/start_app.sh" ubuntu@${APPLICATION_SERVER_IP}:~/
             //     '''
 
             // }
@@ -68,9 +70,7 @@ pipeline {
                     sh '''
                         [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
                         ssh-keyscan -t rsa,dsa ${WEB_SERVER_IP} >> ~/.ssh/known_hosts
-                        scp -o StrictHostKeyChecking=no "${WORKSPACE}/microblog_VPC_deployment/scripts/setup.sh" ubuntu@${WEB_SERVER_IP}:~/
-                        scp -o StrictHostKeyChecking=no "${WORKSPACE}/microblog_VPC_deployment/scripts/start_app.sh" ubuntu@${APPLICATION_SERVER_IP}:~/
-                        ssh ubuntu@${WEB_SERVER_IP} "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
+                        ssh ubuntu@${WEB_SERVER_IP} "bash curl -o https://github.com/dolmagrg123/microblog_VPC_deployment/blob/main/scripts/setup.sh" "bash ~/setup.sh ${APPLICATION_SERVER_IP}"
                     '''
     }
 }
