@@ -80,7 +80,7 @@ Question 2: In WL3, a method of "keeping the process alive" after a Jenkins stag
 
 13. If all is well, create an EC2 t3.micro called "Monitoring" with Prometheus and Grafana and configure it so that it can collect metrics on the application server.
 
-![Prometheus](Images/promehteus_dashboard.jpg)
+![Prometheus](Images/prometheus_dashboard.jpg)
 
 ![Grafana](Images/grafana_dashboard.jpg)
 
