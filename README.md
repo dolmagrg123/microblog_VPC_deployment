@@ -9,11 +9,11 @@
 
 ---
 
-
+### PURPOSE
 
 ## Provisioning Server Infrastructure:
 
-## Instructions
+### The "STEPS" taken (and why each was necessary/important)
 
 1. Clone this repo to your GitHub account. IMPORTANT: Make sure that the repository name is "microblog_VPC_deployment"
 
@@ -97,3 +97,12 @@ Question 2: In WL3, a method of "keeping the process alive" after a Jenkins stag
   	e. An "OPTIMIZATION" section for that answers the questions: What are the advantages of separating the deployment environment from the production environment?  Does the infrastructure in this workload address these concerns?  Could the infrastructure created in this workload be considered that of a "good system"?  Why or why not?  How would you optimize this infrastructure to address these issues?
 
     f. A "CONCLUSION" statement as well as any other sections you feel like you want to include.
+
+
+### "SYSTEM DESIGN DIAGRAM"
+
+### "ISSUES/TROUBLESHOOTING"
+
+### "OPTIMIZATION"
+
+### "CONCLUSION"
