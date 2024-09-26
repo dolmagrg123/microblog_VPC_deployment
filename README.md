@@ -68,11 +68,11 @@ IMPORTANT: Save these scripts in your GitHub Respository in a "scripts" folder.
 
 IMPORTANT/QUESTION/HINT: How do you get the scripts onto their respective servers if they are saved in the GitHub Repo?  Do you SECURE COPY the file from one server to the next in the pipeline? Do you C-opy URL the file first as a setup? How much of this process is manual vs. automated?
 
-### I added curl command to download the scripts from the GitHub repo directly in the Jenkinsfile and the script. So it was all automated with the pipeline.
+#### I added curl command to download the scripts from the GitHub repo directly in the Jenkinsfile and the script. So it was all automated with the pipeline.
 
 Question 2: In WL3, a method of "keeping the process alive" after a Jenkins stage completed was necessary.  Is it in this Workload? Why or why not?
 
-### It is not necessary in this workload as we are running a script through the jenkins pipeline and the script runs the process. So the process does not keep the jenkins pipeline hanging and allows to successfully end the pipeline when the script is ran"
+#### It is not necessary in this workload as we are running a script through the jenkins pipeline and the script runs the process. So the process does not keep the jenkins pipeline hanging and allows to successfully end the pipeline when the script is ran"
 
 12. Create a MultiBranch Pipeline and run the build. IMPORTANT: Make sure the name of the pipeline is: "workload_4". 
 
