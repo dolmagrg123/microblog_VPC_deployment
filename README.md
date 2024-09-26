@@ -155,6 +155,14 @@ Question 2: In WL3, a method of "keeping the process alive" after a Jenkins stag
 
 ### "ISSUES/TROUBLESHOOTING"
 
+To install python we needed some additional installations. Had to add it in our script as well to make sure it is installed during our Jenkins pipeline first run.
+
+```
+sudo apt install -y software-properties-common
+sudo add-apt-repository -y ppa:deadsnakes/ppa
+```
+![Error](Images/python_install_jenkins_error.jpg)
+![Solution](Images/python_install_solution.jpg)
 
 To avoid putting private IPs in code, we added it to Jenkins credentials but were unable to read the private and public ip that were added in the Jenkins credentials. Had to make sure to use {}
 
@@ -162,15 +170,19 @@ To avoid putting private IPs in code, we added it to Jenkins credentials but wer
         WEB_SERVER_IP = "${env.WEB_SERVER_IP}" // Access the environment variable
         APPLICATION_SERVER_IP = "${env.APPLICATION_SERVER_IP}" // Access the application server IP
 ```
-![SSH_error](Images/env_jenkins_error.jpg)
+![error](Images/env_jenkins_error.jpg)
 
 During the scan stage, if we do not install the plugin for OWASP Dependency-Check, it fails.
 
-![SSH_error](Images/jenkins_DP_CHECK_error.jpg)
+![error](Images/jenkins_DP_CHECK_error.jpg)
 
 Even though we were able to manually ssh from webserver to application server, we were unable to do the same through Jenkins pipeline. To resolve this issue, we added the private key credentials into the Jenkins Global configuration and also installed ssh-agent plugin.
-![SSH_error](Images/deploy_host_verification_error.jpg)
 
+![error](Images/deploy_host_verification_error.jpg)
+
+When trying to use scp to copy our script the pipeline got stuck, so we ended up using curl to download the script instead.
+
+![error](Images/scp_pipeline_stuck_issue.jpg)
 
 ### "OPTIMIZATION"
 
