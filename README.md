@@ -11,7 +11,7 @@
 
 ### PURPOSE
 
-The purpose of this workload is to deploy an application, making sure that the application server, which has the application code is secure in the private subnet. Also we use Jenkins to automate the deployment process. Finally we use Prometheus and Grafana to ensure monitoring of our application.
+The purpose of this workload is to deploy an application, making sure that the application server, which has the application code is secure in the private subnet and our webserver is publicly accessible. Also we use Jenkins to automate the deployment process. Finally we use Prometheus and Grafana to ensure monitoring of our application.
 
 ## Provisioning Server Infrastructure:
 
@@ -36,6 +36,8 @@ The purpose of this workload is to deploy an application, making sure that the a
 7. SSH into the "Jenkins" server and run `ssh-keygen`. Copy the public key that was created and append it into the "authorized_keys" file in the Web Server. 
 
 IMPORTANT: Test the connection by SSH'ing into the 'Web_Server' from the 'Jenkins' server.  This will also add the web server instance to the "list of known hosts"
+
+#### This did not work as the two servers were in different VPCs. To resolve this issue we created VPC peering between our two VPC and then we were able to SSH into our webserver through our Jenkins Server
 
 Question: What does it mean to be a known host?
 
@@ -71,10 +73,12 @@ sudo apt install -y software-properties-common
 sudo add-apt-repository -y ppa:deadsnakes/ppa
 sudo apt install -y python3.9 python3.9-venv python3-pip nginx git
 # Clone the GitHub repository if it doesn't already exist
+#if the repo does not exist we will clone it.
 if [ ! -d "microblog_VPC_deployment" ]; then
   git clone https://github.com/dolmagrg123/microblog_VPC_deployment.git
 fi
 cd microblog_VPC_deployment
+#pull the latest code in case we already have the repo present(common after first successful build)
 git pull
 python3.9 -m venv venv
 echo "Activating vitual env"
@@ -102,8 +106,10 @@ chmod 400 workload_4.pem
 
 # SSH into the application server and run start_app.sh
 echo "logging into application server and running start_app script"
+#ssh into the application server, pull the script from GitHub and run the script
 ssh -i "workload_4.pem" ubuntu@${APPLICATION_SERVER_IP} "curl -o ~/start_app.sh https://raw.githubusercontent.com/dolmagrg123/microblog_VPC_deployment/refs/heads/main/scripts/start_app.sh && bash ~/start_app.sh"
 
+#checks if exit status is not equal to 0, since a non zero value indicates failure.
 if [ $? -ne 0 ]; then
     echo "Failed to execute start_app.sh on ${APPLICATION_SERVER_IP}"
     exit 1
@@ -131,6 +137,8 @@ Question 2: In WL3, a method of "keeping the process alive" after a Jenkins stag
 #### It is not necessary in this workload as we are running a script through the jenkins pipeline and the script runs the process. So the process does not keep the jenkins pipeline hanging and allows to successfully end the pipeline when the script is ran"
 
 12. Create a MultiBranch Pipeline and run the build. IMPORTANT: Make sure the name of the pipeline is: "workload_4". 
+
+We added credentials in Jenkins Global credential and also installed plugins for ssh-agent and OWASP.
 
 ![Jenkins Pipeline](Images/final_pipeline.jpg)
 
@@ -188,4 +196,12 @@ When trying to use scp to copy our script the pipeline got stuck, so we ended up
 
  What are the advantages of separating the deployment environment from the production environment?  Does the infrastructure in this workload address these concerns?  Could the infrastructure created in this workload be considered that of a "good system"?  Why or why not?  How would you optimize this infrastructure to address these issues?
 
+
+ The main advantage of separating deployment and production environment could be the security aspect, rollback capabilities and better testing environment. Keeping our code in private subnet minimizes the risk of the code being exposed and altered. In our infrastructure we do have different servers for web server and application server but we still do not seem to have a separate production environment. Having a separate deployment/production environment allows testing before we push our code in the production environment. Any issues occurred during development process will not effect the production.
+
+ Our system does not have autoscaling capabilities as we have not enabled autoscaling. Once we have autoscalers, we can also use load balancers to separate the load between different servers. We could add more monitoring and create alarms based on the alerts to notify engineers if any issues arise.
+
+
 ### "CONCLUSION"
+
+This workload was successfully able to segregate our web server and application server by putting them in public and private subnets respectively. We were able to make use VPC to connect multiple VPCs and deploy our application using the Jenkins CI/CD pipeline which help reduce a lot of manual work making our deployment more efficient.
