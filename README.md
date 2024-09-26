@@ -11,6 +11,8 @@
 
 ### PURPOSE
 
+The purpose of this workload is to deploy an application, making sure that the application server, which has the application code is secure in the private subnet. Also we use Jenkins to automate the deployment process. Finally we use Prometheus and Grafana to ensure monitoring of our application.
+
 ## Provisioning Server Infrastructure:
 
 ### The "STEPS" taken (and why each was necessary/important)
@@ -37,6 +39,8 @@ IMPORTANT: Test the connection by SSH'ing into the 'Web_Server' from the 'Jenkin
 
 Question: What does it mean to be a known host?
 
+#### To be a known hosts the remote system's public key has to be stored in the local hosts ~/.ssh/known_hosts file. This allows the servers to connect in the future and forms a trust with the server.
+
 8. In the Web Server, install NginX and modify the "sites-enabled/default" file so that the "location" section reads as below:
 ```
 location / {
@@ -47,9 +51,13 @@ proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 ```
 IMPORTANT: Be sure to replace `<private_IP>` with the private IP address of the application server. Run the command `sudo nginx -t` to verify. Restart NginX afterward.
 
+This step allowed nginx to run the gunicorn application from the application_server in the public ip of web_server by passing the private ip of application server.
+
 9. Copy the key pair (.pem file) of the "Application_Server" to the "Web_Server".  How you choose to do this is up to you.  (Best practice would be to SCP from your local machine into the Jenkins server but if not, it is possible to nano a new file and copy/paste the contents of the .pem file into it.  MAKE SURE TO INCLUDE EVERYTHING FROM -----BEGIN RSA PRIVATE KEY----- to -----END RSA PRIVATE KEY----- including a new line afterwards if you chose this route)
 
 IMPORTANT: Test the connection by SSH'ing into the "Application_Server" from the "Web_Server".
+
+#### I used the copy/paste into .pem file method to add the key into my server and was able to ssh into application server via the webserver.
 
 10. Create scripts.  2 scripts are required for this Workload and outlined below:
 
@@ -107,8 +115,7 @@ fi
 
 Question: What is the difference between running scripts with the source command and running the scripts either by changing the permissions or by using the 'bash' interpreter?
 
-IMPORTANT: Save these scripts in your GitHub Respository in a "scripts" folder.
-
+#### I ran it by changing the permissions to allow the script to be executable. Running with source would allow the script to be executed in current sheel vs changing permissions runs the script ina new subshell.
 
 11. Create a Jenkinsfile that will 'Build' the application, 'Test' the application by running a pytest, run the OWASP dependency checker, and then "Deploy" the application by SSH'ing into the "Web_Server" to run "setup.sh" (which would then run "start_app.sh").
 
