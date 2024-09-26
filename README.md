@@ -76,6 +76,8 @@ Question 2: In WL3, a method of "keeping the process alive" after a Jenkins stag
 
 ![Jenkins Pipeline](Images/final_pipeline_console.jpg)
 
+![Application](Images/application_up_public_ip.jpg)
+
 13. If all is well, create an EC2 t3.micro called "Monitoring" with Prometheus and Grafana and configure it so that it can collect metrics on the application server.
 
 14. Document! All projects have documentation so that others can read and understand what was done and how it was done. Create a README.md file in your repository that describes:
