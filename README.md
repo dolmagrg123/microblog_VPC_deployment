@@ -55,7 +55,53 @@ IMPORTANT: Test the connection by SSH'ing into the "Application_Server" from the
 
 a) a "start_app.sh" script that will run on the application server that will set up the server so that has all of the dependencies that the application needs, clone the GH repository, install the application dependencies from the requirements.txt file as well as [gunicorn, pymysql, cryptography], set ENVIRONMENTAL Variables, flask commands, and finally the gunicorn command that will serve the application IN THE BACKGROUND
 
+```
+#! /bin/bash
+
+sudo apt update
+sudo apt install -y software-properties-common
+sudo add-apt-repository -y ppa:deadsnakes/ppa
+sudo apt install -y python3.9 python3.9-venv python3-pip nginx git
+# Clone the GitHub repository if it doesn't already exist
+if [ ! -d "microblog_VPC_deployment" ]; then
+  git clone https://github.com/dolmagrg123/microblog_VPC_deployment.git
+fi
+cd microblog_VPC_deployment
+git pull
+python3.9 -m venv venv
+echo "Activating vitual env"
+source venv/bin/activate
+echo "Installing Requirements of the application"
+pip install -r requirements.txt
+pip install gunicorn pymysql cryptography
+export FLASK_APP=microblog.py
+flask translate compile
+flask db upgrade
+echo "Starting Gunicorn..."
+gunicorn -b :5000 -w 4 microblog:app --daemon
+
+```
+
 b) a "setup.sh" script that will run in the "Web_Server" that will SSH into the "Application_Server" to run the "start_app.sh" script.
+
+```
+#! /bin/bash
+
+APPLICATION_SERVER_IP=$1
+
+# Set permissions for the SSH key
+chmod 400 workload_4.pem
+
+# SSH into the application server and run start_app.sh
+echo "logging into application server and running start_app script"
+ssh -i "workload_4.pem" ubuntu@${APPLICATION_SERVER_IP} "curl -o ~/start_app.sh https://raw.githubusercontent.com/dolmagrg123/microblog_VPC_deployment/refs/heads/main/scripts/start_app.sh && bash ~/start_app.sh"
+
+if [ $? -ne 0 ]; then
+    echo "Failed to execute start_app.sh on ${APPLICATION_SERVER_IP}"
+    exit 1
+fi
+
+```
 
 (HINT: run the scripts with "source" to avoid issues)
 
