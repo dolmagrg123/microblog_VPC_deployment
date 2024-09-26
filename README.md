@@ -169,7 +169,7 @@ To install python we needed some additional installations. Had to add it in our 
 sudo apt install -y software-properties-common
 sudo add-apt-repository -y ppa:deadsnakes/ppa
 ```
-![Error](Images/python_install_jekins_error.jpg)
+![Error](Images/python_jenkins_error.jpg)
 ![Solution](Images/python_install_solution.jpg)
 
 To avoid putting private IPs in code, we added it to Jenkins credentials but were unable to read the private and public ip that were added in the Jenkins credentials. Had to make sure to use {}
