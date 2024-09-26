@@ -57,7 +57,7 @@ This step allowed nginx to run the gunicorn application from the application_ser
 
 IMPORTANT: Test the connection by SSH'ing into the "Application_Server" from the "Web_Server".
 
-#### I used the copy/paste into .pem file method to add the key into my server and was able to ssh into application server via the webserver.
+#### We used the copy/paste into .pem file method to add the key into my server and was able to ssh into application server via the webserver.
 
 10. Create scripts.  2 scripts are required for this Workload and outlined below:
 
@@ -115,13 +115,16 @@ fi
 
 Question: What is the difference between running scripts with the source command and running the scripts either by changing the permissions or by using the 'bash' interpreter?
 
-#### I ran it by changing the permissions to allow the script to be executable. Running with source would allow the script to be executed in current sheel vs changing permissions runs the script ina new subshell.
+#### We ran it by changing the permissions to allow the script to be executable. Running with source would allow the script to be executed in current sheel vs changing permissions runs the script ina new subshell.
+
+![script_output](Images/gunicorn_running_terminal.jpg)
+![script_output](Images/manual_script_run.jpg)
 
 11. Create a Jenkinsfile that will 'Build' the application, 'Test' the application by running a pytest, run the OWASP dependency checker, and then "Deploy" the application by SSH'ing into the "Web_Server" to run "setup.sh" (which would then run "start_app.sh").
 
 IMPORTANT/QUESTION/HINT: How do you get the scripts onto their respective servers if they are saved in the GitHub Repo?  Do you SECURE COPY the file from one server to the next in the pipeline? Do you C-opy URL the file first as a setup? How much of this process is manual vs. automated?
 
-#### I added curl command to download the scripts from the GitHub repo directly in the Jenkinsfile and the script. So it was all automated with the pipeline.
+#### We added curl command to download the scripts from the GitHub repo directly in the Jenkinsfile and the script. So it was all automated with the pipeline.
 
 Question 2: In WL3, a method of "keeping the process alive" after a Jenkins stage completed was necessary.  Is it in this Workload? Why or why not?
 
@@ -151,6 +154,23 @@ Question 2: In WL3, a method of "keeping the process alive" after a Jenkins stag
 (IMPORTANT: Save the diagram as "Diagram.jpg" and upload it to the root directory of the GitHub repo.),
 
 ### "ISSUES/TROUBLESHOOTING"
+
+
+To avoid putting private IPs in code, we added it to Jenkins credentials but were unable to read the private and public ip that were added in the Jenkins credentials. Had to make sure to use {}
+
+```
+        WEB_SERVER_IP = "${env.WEB_SERVER_IP}" // Access the environment variable
+        APPLICATION_SERVER_IP = "${env.APPLICATION_SERVER_IP}" // Access the application server IP
+```
+![SSH_error](Images/env_jenkins_error.jpg)
+
+During the scan stage, if we do not install the plugin for OWASP Dependency-Check, it fails.
+
+![SSH_error](Images/jenkins_DP_CHECK_error.jpg)
+
+Even though we were able to manually ssh from webserver to application server, we were unable to do the same through Jenkins pipeline. To resolve this issue, we added the private key credentials into the Jenkins Global configuration and also installed ssh-agent plugin.
+![SSH_error](Images/deploy_host_verification_error.jpg)
+
 
 ### "OPTIMIZATION"
 
