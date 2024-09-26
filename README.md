@@ -64,17 +64,26 @@ Question: What is the difference between running scripts with the source command
 IMPORTANT: Save these scripts in your GitHub Respository in a "scripts" folder.
 
 
-11. Create a Jenkinsfile that will 'Build' the application, 'Test' the application by running a pytest (you can re-use the test from WL3 or challenge yourself to create a new one), run the OWASP dependency checker, and then "Deploy" the application by SSH'ing into the "Web_Server" to run "setup.sh" (which would then run "start_app.sh").
+11. Create a Jenkinsfile that will 'Build' the application, 'Test' the application by running a pytest, run the OWASP dependency checker, and then "Deploy" the application by SSH'ing into the "Web_Server" to run "setup.sh" (which would then run "start_app.sh").
 
 IMPORTANT/QUESTION/HINT: How do you get the scripts onto their respective servers if they are saved in the GitHub Repo?  Do you SECURE COPY the file from one server to the next in the pipeline? Do you C-opy URL the file first as a setup? How much of this process is manual vs. automated?
 
+### I added curl command to download the scripts from the GitHub repo directly in the Jenkinsfile and the script. So it was all automated with the pipeline.
+
 Question 2: In WL3, a method of "keeping the process alive" after a Jenkins stage completed was necessary.  Is it in this Workload? Why or why not?
 
-12. Create a MultiBranch Pipeline and run the build. IMPORTANT: Make sure the name of the pipeline is: "workload_4".  Check to see if the application can be accessed from the public IP address of the "Web_Server".
+### It is not necessary in this workload as we are running a script through the jenkins pipeline and the script runs the process. So the process does not keep the jenkins pipeline hanging and allows to successfully end the pipeline when the script is ran"
+
+12. Create a MultiBranch Pipeline and run the build. IMPORTANT: Make sure the name of the pipeline is: "workload_4". 
 
 ![Jenkins Pipeline](Images/final_pipeline.jpg)
 
 ![Jenkins Pipeline](Images/final_pipeline_console.jpg)
+
+
+
+### Application accessed from the public IP address of the Web_Server
+
 
 ![Application](Images/application_up_public_ip.jpg)
 
@@ -84,25 +93,14 @@ Question 2: In WL3, a method of "keeping the process alive" after a Jenkins stag
 
 ![Grafana](Images/grafana_dashboard.jpg)
 
-14. Document! All projects have documentation so that others can read and understand what was done and how it was done. Create a README.md file in your repository that describes:
-
-	  a. The "PURPOSE" of the Workload,
-
-  	b. The "STEPS" taken (and why each was necessary/important),
-    
-  	c. A "SYSTEM DESIGN DIAGRAM" that is created in draw.io (IMPORTANT: Save the diagram as "Diagram.jpg" and upload it to the root directory of the GitHub repo.),
-
-	  d. "ISSUES/TROUBLESHOOTING" that may have occured,
-
-  	e. An "OPTIMIZATION" section for that answers the questions: What are the advantages of separating the deployment environment from the production environment?  Does the infrastructure in this workload address these concerns?  Could the infrastructure created in this workload be considered that of a "good system"?  Why or why not?  How would you optimize this infrastructure to address these issues?
-
-    f. A "CONCLUSION" statement as well as any other sections you feel like you want to include.
-
 
 ### "SYSTEM DESIGN DIAGRAM"
+(IMPORTANT: Save the diagram as "Diagram.jpg" and upload it to the root directory of the GitHub repo.),
 
 ### "ISSUES/TROUBLESHOOTING"
 
 ### "OPTIMIZATION"
+
+ What are the advantages of separating the deployment environment from the production environment?  Does the infrastructure in this workload address these concerns?  Could the infrastructure created in this workload be considered that of a "good system"?  Why or why not?  How would you optimize this infrastructure to address these issues?
 
 ### "CONCLUSION"
