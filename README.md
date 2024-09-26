@@ -24,7 +24,7 @@
 3. Navigate to subnets and edit the settings of the public subet you created to auto assign public IPv4 addresses.
 
 4. In the Default VPC, create an EC2 t3.medium called "Jenkins" and install Jenkins onto it.
-
+![instance_launch](Images/t3_medium.jpg)
 ![Jenkins_EC2](Images/Jenkins_EC2.jpg)
 
 5. Create an EC2 t3.micro called "Web_Server" In the PUBLIC SUBNET of the Custom VPC, and create a security group with ports 22 and 80 open.  
@@ -63,6 +63,7 @@ Question: What is the difference between running scripts with the source command
 
 IMPORTANT: Save these scripts in your GitHub Respository in a "scripts" folder.
 
+
 11. Create a Jenkinsfile that will 'Build' the application, 'Test' the application by running a pytest (you can re-use the test from WL3 or challenge yourself to create a new one), run the OWASP dependency checker, and then "Deploy" the application by SSH'ing into the "Web_Server" to run "setup.sh" (which would then run "start_app.sh").
 
 IMPORTANT/QUESTION/HINT: How do you get the scripts onto their respective servers if they are saved in the GitHub Repo?  Do you SECURE COPY the file from one server to the next in the pipeline? Do you C-opy URL the file first as a setup? How much of this process is manual vs. automated?
@@ -70,6 +71,10 @@ IMPORTANT/QUESTION/HINT: How do you get the scripts onto their respective server
 Question 2: In WL3, a method of "keeping the process alive" after a Jenkins stage completed was necessary.  Is it in this Workload? Why or why not?
 
 12. Create a MultiBranch Pipeline and run the build. IMPORTANT: Make sure the name of the pipeline is: "workload_4".  Check to see if the application can be accessed from the public IP address of the "Web_Server".
+
+![Jenkins Pipeline](Images/final_pipeline.jpg)
+
+![Jenkins Pipeline](Images/final_pipeline_console.jpg)
 
 13. If all is well, create an EC2 t3.micro called "Monitoring" with Prometheus and Grafana and configure it so that it can collect metrics on the application server.
 
