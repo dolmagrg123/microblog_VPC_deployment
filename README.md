@@ -23,7 +23,9 @@
 
 3. Navigate to subnets and edit the settings of the public subet you created to auto assign public IPv4 addresses.
 
-4. In the Default VPC, create an EC2 t3.medium called "Jenkins" and install Jenkins onto it.  
+4. In the Default VPC, create an EC2 t3.medium called "Jenkins" and install Jenkins onto it.
+
+![Jenkins_EC2](Images/Jenkins_EC2.jpg)
 
 5. Create an EC2 t3.micro called "Web_Server" In the PUBLIC SUBNET of the Custom VPC, and create a security group with ports 22 and 80 open.  
 
